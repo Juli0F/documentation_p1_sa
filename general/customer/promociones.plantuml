@@ -1,0 +1,22 @@
+@startuml
+class Promocion {
+  Long id
+  String nombre
+  String descripcion
+  BigDecimal porcentajeDescuento
+  LocalDate fechaInicio
+  LocalDate fechaFin
+  TipoPromocion tipoPromocion
+  Long hotelId  
+  Long habitacionId
+  Long restauranteId 
+  Long platilloId  
+  Long clientePreferencialId  
+}
+
+enum TipoPromocion {
+  HABITACION
+  PLATILLO
+}
+
+@enduml

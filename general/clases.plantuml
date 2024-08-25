@@ -1,0 +1,296 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' Microservicio de Clientes
+class Cliente {
+  Long id
+  String nombre
+  String apellido
+  String email
+  String telefono
+  String direccion
+  LocalDate fechaRegistro
+  List<Preferencia> preferencias
+  List<Consumo> historialConsumos
+  List<Reserva> reservas
+}
+
+class ClientePreferencial extends Cliente {
+  NivelPreferencia nivelPreferencia
+  LocalDate fechaInicioPreferencia
+  BigDecimal descuentoExclusivo
+}
+
+enum NivelPreferencia {
+  ORO
+  PLATA
+  BRONCE
+}
+
+class Preferencia {
+  Long id
+  TipoPreferencia tipo
+  String descripcion
+  Long clienteId
+}
+
+enum TipoPreferencia {
+  HABITACION
+  PLATILLO
+  UBICACION
+}
+
+class Consumo {
+  Long id
+  LocalDate fecha
+  BigDecimal monto
+  String descripcion
+  Long clienteId
+}
+
+class Reserva {
+  Long id
+  LocalDateTime fechaInicio
+  LocalDateTime fechaFin
+  EstadoReserva estado
+  TipoReserva tipoReserva
+  Long clienteId
+  Long referenciaId
+  BigDecimal montoTotal
+  Long mesaId
+}
+
+enum TipoReserva {
+  HABITACION
+  RESTAURANTE
+}
+
+enum EstadoReserva {
+  PENDIENTE
+  CONFIRMADA
+  CANCELADA
+  FINALIZADA
+}
+class Factura {
+  Long id
+  String numeroFactura
+  LocalDate fechaEmision
+  Long clienteId
+  BigDecimal total
+  BigDecimal impuestos
+  List<DetalleFactura> detalles
+  EstadoFactura estado  
+  Long referenciaId
+}
+
+enum EstadoFactura {
+  Emitida
+  Pagada
+  Cancelada
+}
+class DetalleFactura {
+  Long id
+  String descripcion
+  BigDecimal precioUnitario
+  int cantidad
+  BigDecimal subtotal
+}
+Factura --> DetalleFactura : contiene >
+Factura --> Cliente : emitida a >
+Cliente --> Preferencia : tiene >
+Cliente --> Consumo : tiene >
+Cliente --> Reserva : tiene >
+
+' Microservicio de Opiniones
+class Opinion {
+  Long id
+  LocalDate fecha
+  int calificacion
+  String comentario
+  Long clienteId
+  TipoOpinion tipoOpinion
+  Long referenciaId
+}
+
+enum TipoOpinion {
+  HABITACION
+  PLATILLO
+}
+
+Cliente --> Opinion : deja >
+
+' Microservicio de Promociones
+class Promocion {
+  Long id
+  String nombre
+  String descripcion
+  BigDecimal porcentajeDescuento
+  LocalDate fechaInicio
+  LocalDate fechaFin
+  TipoPromocion tipoPromocion
+  Long referenciaId
+  Long clientePreferencialId
+}
+
+enum TipoPromocion {
+  HABITACION
+  PLATILLO
+}
+
+Promocion --> Reserva : aplica >
+
+' Microservicio de Restaurantes
+class Restaurante {
+  Long id
+  String nombre
+  String direccion
+  String telefono
+  List<Mesa> mesas
+  List<Platillo> platillos
+  List<Empleado> empleados
+}
+
+class Mesa {
+  Long id
+  int numero
+  int capacidad
+  boolean disponible
+  Long restauranteId
+}
+
+class Platillo {
+  Long id
+  String nombre
+  String descripcion
+  BigDecimal precio
+  Long restauranteId
+}
+
+class Pedido {
+  Long id
+  LocalDateTime fecha
+  Long clienteId
+  Long restauranteId
+  BigDecimal total
+  List<DetallePedido> detallePedido
+}
+
+class DetallePedido {
+  Long id
+  Long platilloId
+  int cantidad
+  BigDecimal precioUnitario
+  BigDecimal subtotal
+}
+
+Restaurante --> Mesa : tiene >
+Restaurante --> Platillo : tiene >
+Restaurante --> Pedido : recibe >
+Pedido --> DetallePedido : incluye >
+DetallePedido --> Platillo : refiere a >
+Restaurante --> Empleado : asigna >
+
+' Microservicio de Hoteles
+class Hotel {
+  Long id
+  String nombre
+  String direccion
+  String telefono
+  Long restauranteId
+  List<Habitacion> habitaciones
+  List<Servicio> servicios
+  List<Empleado> empleados
+}
+
+class Habitacion {
+  Long id
+  String numero
+  int capacidad
+  boolean disponible
+  Long hotelId
+}
+
+class Servicio {
+  Long id
+  String nombre
+  String descripcion
+  BigDecimal precio
+  Long hotelId
+}
+
+Hotel --> Habitacion : tiene >
+Hotel --> Servicio : ofrece >
+Hotel --> Empleado : asigna >
+
+' Microservicio de Gestión Interna (Ganancias y Empleados)
+class Ganancia {
+  Long id
+  LocalDate fechaInicio
+  LocalDate fechaFin
+  BigDecimal ingresosTotales
+  BigDecimal costosTotales
+  BigDecimal gananciaNeta
+  Long establecimientoId
+}
+
+class Ingreso {
+  Long id
+  LocalDate fecha
+  BigDecimal monto
+  TipoIngreso tipoIngreso
+  Long referenciaId
+  Long establecimientoId
+}
+
+class Costo {
+  Long id
+  LocalDate fecha
+  BigDecimal monto
+  TipoCosto tipoCosto
+  Long establecimientoId
+}
+
+enum TipoIngreso {
+  RESERVA_HABITACION
+  CONSUMO_RESTAURANTE
+}
+
+enum TipoCosto {
+  MANTENIMIENTO_HABITACION
+  SUELDO_EMPLEADO
+  INSUMOS_RESTAURANTE
+}
+
+class Empleado {
+  Long id
+  String nombre
+  String apellido
+  String email
+  String telefono
+  LocalDate fechaContratacion
+  BigDecimal salario
+  List<Rol> roles
+}
+
+class Rol {
+  Long id
+  String nombre
+  List<Permiso> permisos
+}
+
+class Permiso {
+  Long id
+  String nombre
+  String descripcion
+}
+
+Ganancia --> Ingreso : suma >
+Ganancia --> Costo : resta >
+Empleado --> Rol : tiene >
+Rol --> Permiso : tiene >
+Reserva --> Mesa : depende >
+Reserva --> Habitacion : aparta >
+Ganancia <-- Hotel : obtiene <
+Ganancia <-- Restaurante : obtiene <
+
+@enduml

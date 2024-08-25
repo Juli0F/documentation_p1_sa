@@ -1,0 +1,43 @@
+@startuml
+skinparam componentStyle rectangle
+
+rectangle "Clientes y Opiniones" as CYO {
+    [Clientes] <<Microservicio>> as Clientes
+    [Opiniones] <<Microservicio>> as Opiniones
+    [Reservas] <<Microservicio>> as Reservas
+    [Promociones] <<Microservicio>> as Promociones
+}
+
+' rectangle "Reservas y Promociones" as RYP {
+    
+' }
+
+rectangle "Establecimientos" as EstablecimientosSection {
+    [Hoteles] <<Microservicio>> as Hoteles
+    [Restaurantes] <<Microservicio>> as Restaurantes
+}
+
+rectangle "Gestión Interna" as GI {
+    [Ganancias] <<Microservicio>> as Ganancias
+    [Empleados] <<Microservicio>> as Empleados
+}
+
+Clientes -down-> Opiniones : Deja opiniones
+Clientes -down-> Reservas : Hace reservas de habitaciones
+Clientes -down-> Restaurantes : Hace reservas de mesas
+
+Opiniones -down-> Reservas : Opiniones sobre habitaciones
+Opiniones -down-> Restaurantes : Opiniones sobre platillos
+
+Reservas -down-> Promociones : Aplica promociones a habitaciones
+Promociones -down-> Restaurantes : Aplica promociones a platillos
+
+Ganancias -down-> Reservas : Calcula ingresos de reservas
+Ganancias -down-> Restaurantes : Calcula ingresos de restaurantes
+Ganancias -down-> Hoteles : Calcula ingresos de habitaciones y servicios
+Ganancias -down-> Empleados : Relaciona con la nómina de empleados
+
+Reservas -down-> Hoteles  : Relaciona con habitaciones
+Reservas -down-> Restaurantes  : Relaciona con mesas
+
+@enduml

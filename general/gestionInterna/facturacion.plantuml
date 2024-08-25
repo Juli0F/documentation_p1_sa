@@ -1,0 +1,33 @@
+@startuml
+
+class Factura {
+  Long id
+  String numeroFactura
+  LocalDate fechaEmision
+  Long clienteId
+  BigDecimal total
+  BigDecimal impuestos
+  List<DetalleFactura> detalles
+  EstadoFactura estado  
+  Long referenciaId
+}
+
+enum EstadoFactura {
+  Emitida
+  Pagada
+  Cancelada
+}
+
+class DetalleFactura {
+  Long id
+  String descripcion
+  BigDecimal precioUnitario
+  int cantidad
+  BigDecimal subtotal
+}
+
+Factura --> DetalleFactura : contiene >
+Factura --> Cliente : emitida a >
+
+
+@enduml

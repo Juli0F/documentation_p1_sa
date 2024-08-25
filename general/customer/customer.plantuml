@@ -1,0 +1,58 @@
+@startuml
+class Cliente {
+  Long id
+  String nombre
+  String apellido
+  String email
+  String telefono
+  String direccion
+  LocalDate fechaRegistro
+  List<Preferencia> preferencias
+  List<Consumo> historialConsumos
+  List<Reserva> reservas
+}
+enum NivelPreferencia {
+  ORO
+  PLATA
+  BRONCE
+}
+class ClientePreferencial extends Cliente {
+  NivelPreferencia nivelPreferencia
+  LocalDate fechaInicioPreferencia
+  BigDecimal descuentoExclusivo
+}
+
+class Preferencia {
+  Long id
+  TipoPreferencia tipo
+  String descripcion
+  Cliente cliente
+}
+
+enum TipoPreferencia {
+  HABITACION
+  PLATILLO
+  UBICACION
+}
+
+class Consumo {
+  Long id
+  LocalDate fecha
+  BigDecimal monto
+  String descripcion
+  Cliente cliente
+}
+
+class Reserva {
+  Long id
+  LocalDate fechaInicio
+  LocalDate fechaFin
+  String estado
+  String tipoReserva
+  Cliente cliente
+}
+
+Cliente --> Preferencia : tiene >
+Cliente --> Consumo : tiene >
+Cliente --> Reserva : tiene >
+@enduml

@@ -1,0 +1,42 @@
+@startuml
+class Ganancia {
+  Long id
+  LocalDate fechaInicio
+  LocalDate fechaFin
+  BigDecimal ingresosTotales
+  BigDecimal costosTotales
+  BigDecimal gananciaNeta
+  Long establecimientoId  
+}
+
+class Ingreso {
+  Long id
+  LocalDate fecha
+  BigDecimal monto
+  TipoIngreso tipoIngreso
+  Long referenciaId  
+  Long establecimientoId 
+}
+
+class Costo {
+  Long id
+  LocalDate fecha
+  BigDecimal monto
+  TipoCosto tipoCosto
+  Long establecimientoId 
+}
+
+enum TipoIngreso {
+  RESERVA_HABITACION
+  CONSUMO_RESTAURANTE
+}
+
+enum TipoCosto {
+  MANTENIMIENTO_HABITACION
+  SUELDO_EMPLEADO
+  INSUMOS_RESTAURANTE
+}
+
+Ganancia --> Ingreso : suma >
+Ganancia --> Costo : resta >
+@enduml

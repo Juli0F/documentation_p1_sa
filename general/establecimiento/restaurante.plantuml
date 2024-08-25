@@ -1,0 +1,65 @@
+@startuml
+class Restaurante {
+  Long id
+  String nombre
+  String direccion
+  String telefono
+  List<Mesa> mesas
+  List<Platillo> platillos
+  List<Empleado> empleados 
+}
+
+class Mesa {
+  Long id
+  int numero  
+  int capacidad
+  boolean disponible
+  Long restauranteId 
+}
+
+
+class Platillo {
+  Long id
+  String nombre
+  String descripcion
+  BigDecimal precio
+  Long restauranteId 
+}
+
+class Pedido {
+  Long id
+  LocalDateTime fecha
+  Long clienteId 
+  Long restauranteId
+  BigDecimal total
+  List<DetallePedido> detallePedido
+}
+
+class DetallePedido {
+  Long id
+  Long platilloId 
+  int cantidad
+  BigDecimal precioUnitario
+  BigDecimal subtotal
+}
+
+
+class Empleado {
+  Long id
+  String nombre
+  String apellido
+  String email
+  String telefono
+  LocalDate fechaContratacion
+  BigDecimal salario
+  List<Rol> roles  // Lista de roles asignados
+}
+
+
+Restaurante --> Platillo : tiene >
+Restaurante --> Pedido : recibe >
+Pedido --> DetallePedido : incluye >
+DetallePedido --> Platillo : refiere a >
+Restaurante --> Mesa : tiene >
+Restaurante --> Empleado : asigna >
+@enduml

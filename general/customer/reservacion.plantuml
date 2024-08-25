@@ -1,0 +1,27 @@
+@startuml
+class Reserva {
+  Long id
+  LocalDateTime fechaInicio
+  LocalDateTime fechaFin
+  EstadoReserva estado
+  TipoReserva tipoReserva
+  Long clienteId  
+  Long referenciaId 
+  BigDecimal montoTotal
+  Long mesaId 
+}
+
+enum TipoReserva {
+  HABITACION
+  RESTAURANTE
+}
+
+enum EstadoReserva {
+  PENDIENTE
+  CONFIRMADA
+  CANCELADA
+  FINALIZADA
+}
+
+Reserva --> Mesa : reserva >
+@enduml

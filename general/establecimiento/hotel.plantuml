@@ -1,0 +1,43 @@
+@startuml
+class Hotel {
+  Long id
+  String nombre
+  String direccion
+  String telefono
+  Long restauranteId //opcional por si contiene un restaurante
+  List<Habitacion> habitaciones  
+  List<Servicio> servicios  
+  List<Empleado> empleados
+}
+
+class Habitacion {
+  Long id
+  String numero
+  int capacidad
+  boolean disponible
+  Long hotelId  
+}
+
+class Servicio {
+  Long id
+  String nombre 
+  String descripcion
+  BigDecimal precio 
+  Long hotelId  
+}
+
+class Empleado {
+  Long id
+  String nombre
+  String apellido
+  String email
+  String telefono
+  LocalDate fechaContratacion
+  BigDecimal salario
+  List<Rol> roles 
+}
+
+Hotel --> Habitacion : tiene >
+Hotel --> Servicio : ofrece >
+Hotel --> Empleado : asigna >
+@enduml

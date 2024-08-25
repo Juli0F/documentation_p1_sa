@@ -1,0 +1,17 @@
+@startuml
+class Opinion {
+  Long id
+  LocalDate fecha
+  int calificacion 
+  String comentario
+  Long clienteId  
+  TipoOpinion tipoOpinion
+  Long referenciaId
+}
+
+enum TipoOpinion {
+  HABITACION
+  PLATILLO
+}
+
+@enduml

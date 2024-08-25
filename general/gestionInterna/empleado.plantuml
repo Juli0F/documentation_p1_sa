@@ -1,0 +1,37 @@
+@startuml
+class Empleado {
+  Long id
+  String nombre
+  String apellido
+  String email
+  String telefono
+  LocalDate fechaContratacion
+  BigDecimal salario
+  List<Rol> roles  
+  Long establecimientoId  
+}
+
+class Rol {
+  Long id
+  String nombre  
+  List<Permiso> permisos  
+}
+
+class Permiso {
+  Long id
+  String nombre  
+  String descripcion
+}
+
+class AsignacionEmpleado {
+  Long id
+  Long empleadoId
+  Long establecimientoId  
+  LocalDate fechaInicio
+  LocalDate fechaFin  
+}
+
+Empleado --> Rol : tiene >
+Rol --> Permiso : tiene >
+Empleado --> AsignacionEmpleado : asignado >
+@enduml
